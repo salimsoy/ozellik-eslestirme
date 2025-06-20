@@ -6,8 +6,7 @@ class FeatureMatching:
     
     def orb_matching(self,image):
         orb = cv2.ORB_create()
-        kp = orb.detect(image, None)
-        kp, des = orb.compute(image, kp)
+        kp, des = orb.detectAndCompute(image, None)
         return kp, des
     def flann_based_matcher(self, des1, des2):
         FLANN_INDEX_LSH = 6
@@ -23,13 +22,13 @@ class FeatureMatching:
             if len(self.matches[i]) < 2:
                 continue
             m, n = val
-            if m.distance < 0.7 * n.distance:
+            if m.distance < 0.65 * n.distance:
                 matchesMask[i] = [1,0]
         
         self.draw_params = dict(matchColor = (0, 255, 0),
                            singlePointColor = None,
                            matchesMask = matchesMask,
-                           flags = cv2.DrawMatchesFlags_DEFAULT)
+                           flags = 2)
         
         
 if __name__ == '__main__':
